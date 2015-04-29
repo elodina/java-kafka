@@ -40,13 +40,12 @@ public class KafkaLogAppenderTest {
     }
 
     @Test
-    public void TestKafkaLogAppender() {
+    public void testKafkaLogAppender() {
         Properties consumerProps = new Properties();
         consumerProps.put("zookeeper.connect", zookeeper);
         consumerProps.put("group.id", "kafka-log-appender-test");
         consumerProps.put("auto.offset.reset", "smallest");
         consumerProps.put("schema.registry.url", schemaRegistry);
-        consumerProps.put("specific.avro.reader", "true");
 
         Map<String, Integer> topicMap = new HashMap<String, Integer>();
         topicMap.put(topic, 1);
