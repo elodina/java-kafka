@@ -40,3 +40,12 @@ project (':codahale') {
         compile project(':avro')
     }
 }
+
+project (':yammer') {
+    dependencies {
+        compile 'org.json:json:20140107'
+        compile 'com.codahale.metrics:metrics-core:3.0.2'
+        compile 'com.codahale.metrics:metrics-json:3.0.2'
+        compile project(':avro')
+    }
+}

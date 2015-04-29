@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ly.stealth.kafka.metrics;
+package ly.stealth.kafka.metrics.codahale;
 
 import com.codahale.metrics.*;
 import com.codahale.metrics.Timer;

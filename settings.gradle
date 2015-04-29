@@ -1,1 +1,1 @@
-include 'avro', 'log-emitter', 'codahale'
+include 'avro', 'log-emitter', 'codahale', 'yammer'
