@@ -32,6 +32,13 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * KafkaReporter produces all metrics data from a provided registry to Kafka topic with a given reporting interval
+ * encoded as Avro.
+ * Avro schema will be created dynamically to match JSON representation of the registry. LogLine field will also
+ * be added to contain simple metadata about metrics. LogLines logtypeid will be 7 (metrics data) and the source
+ * will be "metrics".
+ */
 public class KafkaReporter extends AbstractPollingReporter implements MetricProcessor<JSONObject> {
     private final KafkaProducer<String, IndexedRecord> producer;
     private final MetricPredicate predicate = MetricPredicate.ALL;

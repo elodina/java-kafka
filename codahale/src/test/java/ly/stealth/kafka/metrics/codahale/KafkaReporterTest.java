@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertNotNull;
 
-public class MetricsReportingSteps {
+public class KafkaReporterTest {
     private final String zkConnect = "localhost:2181";
     private final String kafkaConnect = "localhost:9092";
     private final String schemaRegistry = "http://localhost:8081";
@@ -56,15 +56,15 @@ public class MetricsReportingSteps {
                 topic,
                 schemaRegistry).build();
 
-        ObjectMapper mapper = new ObjectMapper().registerModule(new MetricsModule(TimeUnit.SECONDS,
-                TimeUnit.SECONDS,
-                false));
-        StringWriter r = new StringWriter();
-        try {
-            mapper.writeValue(r, registry);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        ObjectMapper mapper = new ObjectMapper().registerModule(new MetricsModule(TimeUnit.SECONDS,
+//                TimeUnit.SECONDS,
+//                false));
+//        StringWriter r = new StringWriter();
+//        try {
+//            mapper.writeValue(r, registry);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         kafkaReporter.report();
 
