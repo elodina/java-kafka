@@ -6,6 +6,7 @@ import org.apache.avro.generic.IndexedRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.config.ConfigException;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -96,13 +97,40 @@ public class KafkaLogAppender extends AppenderSkeleton {
     }
 
     private KafkaProducer<String, IndexedRecord> producer;
+
     private String topic;
+    private String brokerList;
+    private String schemaRegistryUrl;
+
+    public KafkaLogAppender() {
+
+    }
 
     public KafkaLogAppender(Properties props, String topic) {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         this.producer = new KafkaProducer<String, IndexedRecord>(props);
         this.topic = topic;
+    }
+
+    @Override
+    public void activateOptions() {
+        if (this.brokerList == null)
+            throw new ConfigException("The bootstrap servers property is required");
+
+        if (this.schemaRegistryUrl == null)
+            throw new ConfigException("The schema registry url is required");
+
+        if (this.topic == null)
+            throw new ConfigException("Topic is required");
+
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, this.brokerList);
+        props.put("schema.registry.url", this.schemaRegistryUrl);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+
+        this.producer = new KafkaProducer<String, IndexedRecord>(props);
     }
 
     @Override
@@ -135,5 +163,29 @@ public class KafkaLogAppender extends AppenderSkeleton {
     @Override
     public boolean requiresLayout() {
         return false;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getBrokerList() {
+        return brokerList;
+    }
+
+    public void setBrokerList(String brokerList) {
+        this.brokerList = brokerList;
+    }
+
+    public String getSchemaRegistryUrl() {
+        return schemaRegistryUrl;
+    }
+
+    public void setSchemaRegistryUrl(String schemaRegistryUrl) {
+        this.schemaRegistryUrl = schemaRegistryUrl;
     }
 }

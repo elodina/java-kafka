@@ -31,6 +31,16 @@ project (':log-emitter') {
     dependencies {
         compile project(':avro')
     }
+
+    jar {
+        from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
+            exclude "META-INF/*.SF"
+            exclude "META-INF/*.DSA"
+            exclude "META-INF/*.RSA"
+            exclude "org/apache/kafka/**"
+            exclude "kafka/**"
+        }
+    }
 }
 
 project (':codahale') {
